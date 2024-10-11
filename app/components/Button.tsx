@@ -9,7 +9,7 @@ interface ButtonProps {
 export default function Button({ text, onClick, className = "" }: ButtonProps) {
   return (
     <button
-      className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 my-4 rounded ${className}`}
+      className={`bg-blue-500 hover:bg-blue-700 text-white font-bold sm:py-2 sm:px-4 sm:my-4 sm:text-sm xs:text-xs xs:p-1 rounded ${className}`}
       onClick={onClick}
     >
       {text}

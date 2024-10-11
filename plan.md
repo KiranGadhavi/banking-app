@@ -24,13 +24,13 @@ I will follow these steps as a guide for what components I'll need to build and 
 
 While I planned to use Tailwind CSS, I want some reusable components to speed up my development process:
 
-    Reusable UI Components: Create basic components like buttons, forms, input fields, and transaction cards. This will keep your codebase clean and consistent.
-    Atomic Design Approach: Consider breaking down your UI into atoms (e.g., buttons), molecules (e.g., input forms), and organisms (e.g., transaction list components).
+    Reusable UI Components: Create basic components like buttons, forms, input fields, and transaction cards. This will keep the codebase clean and consistent.
+    Atomic Design Approach: Consider breaking down the UI into atoms (e.g., buttons), molecules (e.g., input forms), and organisms (e.g., transaction list components).
     Example:
     Button Component:
     Form Input Component:
     Transaction Card Component:
-    This will help you maintain a consistent design across your app.
+    This will help the maintain a consistent design across the app.
 
 Lets start with a few components:
 

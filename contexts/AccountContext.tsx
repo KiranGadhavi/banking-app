@@ -1,3 +1,4 @@
+"use client";
 import React, { createContext, useReducer, useContext, ReactNode } from "react";
 
 // Define types
@@ -7,8 +8,8 @@ interface Transaction {
   type: "deposit" | "withdrawal" | "transfer";
   amount: number;
   description?: string;
-  fromAccount?: string;
-  toAccount?: string;
+  fromAccount?: string | null;
+  toAccount?: string | null;
 }
 
 type State = {
@@ -18,12 +19,18 @@ type State = {
 
 type Action =
   | { type: "DEPOSIT"; amount: number; description?: string }
-  | { type: "WITHDRAW"; amount: number; description?: string }
+  | {
+      type: "WITHDRAW";
+      amount: number;
+      description?: string;
+      fromAccount: string;
+    }
   | {
       type: "TRANSFER";
       amount: number;
       description?: string;
-      toAccount: string;
+      toAccount: string | null;
+      fromAccount: string | null;
     };
 
 // Initial state
@@ -55,6 +62,7 @@ function accountReducer(state: State, action: Action): State {
         type: "withdrawal",
         amount: action.amount,
         description: action.description,
+        fromAccount: action.fromAccount,
       };
       return {
         ...state,
@@ -67,7 +75,8 @@ function accountReducer(state: State, action: Action): State {
         date: new Date(),
         type: "transfer",
         amount: action.amount,
-        toAccount: action.toAccount,
+        toAccount: action.toAccount ?? null,
+        fromAccount: action.fromAccount ?? null,
         description: action.description,
       };
       return {
@@ -81,7 +90,7 @@ function accountReducer(state: State, action: Action): State {
 }
 
 // Create context
-const AccountContext = createContext<
+export const AccountContext = createContext<
   | {
       state: State;
       dispatch: React.Dispatch<Action>;

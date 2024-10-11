@@ -1,69 +1,47 @@
-// import Image from "next/image";
 "use client";
+import React from "react";
 import Link from "next/link";
 import Button from "./components/Button";
-import FormInput from "./components/FormInput";
-import { useState } from "react";
+import { useAccount } from "../contexts/AccountContext"; // Ensure this is correctly imported
 import TransactionCard from "./components/TransactionCard";
-import { AccountProvider } from "../contexts/AccountContext";
-import { v4 as uuidv4 } from "uuid";
 
 export default function Home() {
-  const [name, setName] = useState("name");
+  const { state } = useAccount(); // Get state from context
 
   return (
-    // <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-    <AccountProvider>
-      <div className="grid grid-rows items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-        <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-          <div className="flex flex-col gap-2">
-            <Link href="/dashboard">Dashboard</Link>
-            <Link href="/account-overview">Account Overview</Link>
-            <Link href="/transaction-forms">Transaction Forms</Link>
-            <Link href="/transaction-history">Transaction History</Link>
-          </div>
-          <FormInput
-            id={uuidv4()}
-            type={"text"}
-            label="Name"
-            placeholder="Enter your name"
-            value={name}
-            onChange={(name) => setName(name)}
-            className="text-black"
-          />
-          <Button
-            text="Click me"
-            onClick={() => console.log("Button clicked")}
-          />
-
-          <TransactionCard
-            date={new Date()}
-            type="transfer"
-            amount={100}
-            balance={1000}
-            currency="USD"
-            description="Transaction 1"
-            fromAccount="Savings Account"
-            toAccount="Checking Account"
-          />
-          <TransactionCard
-            date={new Date()}
-            type="deposit"
-            amount={200}
-            balance={5000}
-            currency="EUR" // Specify the currency here
-            description="Salary Deposit"
-          />
-          <TransactionCard
-            date={new Date()}
-            type="withdrawal"
-            amount={200}
-            balance={5000}
-            currency="INR" // Specify the currency here
-            description="Salary Deposit"
-          />
-        </main>
-      </div>
-    </AccountProvider>
+    <section className="grid grid-rows sm:mx-14 gap-4 xs:mx-4">
+      <main>
+        {/* Your existing navigation buttons */}
+        <article className="flex flex-row gap-2 py-6 ">
+          <Link href="/dashboard">
+            <Button text="Dashboard" />
+          </Link>
+          <Link href="/account-overview">
+            <Button text="Account Overview" />
+          </Link>
+          <Link href="/transaction-forms">
+            <Button text="Transaction Forms" />
+          </Link>
+          <Link href="/transaction-history">
+            <Button text="Transaction History" />
+          </Link>
+        </article>
+        <article>
+          {state.transactions.map((transaction) => (
+            <TransactionCard
+              key={transaction.id}
+              date={transaction.date}
+              type={transaction.type}
+              amount={transaction.amount}
+              balance={state.balance} // or calculate accordingly
+              currency="USD" // Adjust if you want to use currency dynamically
+              description={transaction.description}
+              fromAccount={transaction.fromAccount} // Only show if applicable
+              toAccount={transaction.toAccount} // Only show if applicable
+            />
+          ))}
+        </article>
+      </main>
+    </section>
   );
 }

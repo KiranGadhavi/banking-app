@@ -26,3 +26,19 @@ Account statement view
 11=> Review your code to ensure consistent naming conventions and code structure.
 
 12=> Prepare your GitHub repository for submission, ensuring it's accessible to the specified GitHub users.
+
+### My current setup with four pages (dashboard, account overview, transaction forms, and transaction history) The main page is entry point, providing quick access to all key features of my app.
+
+To enhance this structure:
+
+Keep the main page as is, serving as a navigation hub and showcase for your app's capabilities.
+
+Dashboard page to display a summary of the user's financial status, including recent transactions and account balance.
+
+The account overview page can provide more detailed information about specific accounts.
+
+transaction forms page is already set up for handling deposits, withdrawals, and transfers.
+
+The transaction history page developed to include sorting and filtering functionality.
+
+This layout provides a comprehensive and user-friendly banking experience. The TransactionCard component you're using on the main page can be repurposed for the dashboard and transaction history pages to maintain consistency across your app.

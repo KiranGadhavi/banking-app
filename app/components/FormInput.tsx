@@ -27,12 +27,12 @@ export default function FormInput({
   options,
 }: FormInputProps) {
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-1 my-4">
       <label htmlFor={id}>{label}</label>
       {type === "select" ? (
         <select
           id={id}
-          className={`border border-gray-300 rounded-md p-2 w-full ${className}`}
+          className={`border  border-gray-300 rounded-md p-2 w-full text-gray-600 ${className}`}
           value={value}
           onChange={(e) => onChange && onChange(e.target.value)}
         >
@@ -46,7 +46,7 @@ export default function FormInput({
       ) : (
         <input
           type={type || "text"}
-          className={`border border-gray-300 rounded-md p-2 w-full ${className}`}
+          className={`border border-gray-300 rounded-md p-2 w-full text-gray-600 ${className}`}
           placeholder={placeholder}
           value={value}
           onChange={(e) => onChange && onChange(e.target.value)}

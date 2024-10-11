@@ -8,8 +8,8 @@ interface TransactionCardProps {
   balance: number;
   currency: string;
   description?: string;
-  fromAccount?: string;
-  toAccount?: string;
+  fromAccount?: string | null;
+  toAccount?: string | null;
   customStyle?: React.CSSProperties;
 }
 
