@@ -1,5 +1,6 @@
 "use client";
 import React, { createContext, useReducer, useContext, ReactNode } from "react";
+// import { v4 as uuidv4 } from "uuid";
 
 // Define types
 interface Transaction {
@@ -18,19 +19,26 @@ type State = {
 };
 
 type Action =
-  | { type: "DEPOSIT"; amount: number; description?: string }
+  | {
+      type: "DEPOSIT";
+      amount: number;
+      description: string;
+      id: string;
+    }
   | {
       type: "WITHDRAW";
       amount: number;
-      description?: string;
+      description: string;
+      id: string;
       fromAccount: string;
     }
   | {
       type: "TRANSFER";
       amount: number;
-      description?: string;
-      toAccount: string | null;
-      fromAccount: string | null;
+      description: string;
+      id: string;
+      fromAccount: string;
+      toAccount: string;
     };
 
 // Initial state
@@ -44,7 +52,7 @@ function accountReducer(state: State, action: Action): State {
   switch (action.type) {
     case "DEPOSIT":
       const depositTransaction: Transaction = {
-        id: Math.random().toString(36).substr(2, 9), // Generate a random id
+        id: action.id,
         date: new Date(),
         type: "deposit",
         amount: action.amount,
@@ -55,9 +63,13 @@ function accountReducer(state: State, action: Action): State {
         balance: state.balance + action.amount,
         transactions: [...state.transactions, depositTransaction],
       };
+
     case "WITHDRAW":
+      if (state.balance < action.amount) {
+        throw new Error("Insufficient balance");
+      }
       const withdrawTransaction: Transaction = {
-        id: Math.random().toString(36).substr(2, 9),
+        id: action.id,
         date: new Date(),
         type: "withdrawal",
         amount: action.amount,
@@ -69,14 +81,15 @@ function accountReducer(state: State, action: Action): State {
         balance: state.balance - action.amount,
         transactions: [...state.transactions, withdrawTransaction],
       };
+
     case "TRANSFER":
       const transferTransaction: Transaction = {
-        id: Math.random().toString(36).substr(2, 9),
+        id: action.id,
         date: new Date(),
         type: "transfer",
         amount: action.amount,
-        toAccount: action.toAccount ?? null,
-        fromAccount: action.fromAccount ?? null,
+        fromAccount: action.fromAccount,
+        toAccount: action.toAccount,
         description: action.description,
       };
       return {
@@ -84,6 +97,7 @@ function accountReducer(state: State, action: Action): State {
         balance: state.balance - action.amount,
         transactions: [...state.transactions, transferTransaction],
       };
+
     default:
       return state;
   }

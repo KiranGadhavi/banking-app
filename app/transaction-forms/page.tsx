@@ -35,16 +35,29 @@ export default function Transpage() {
         | "WITHDRAW"
         | "TRANSFER";
 
+      // Generate a unique ID for this transaction
+      const transactionId = uuidv4();
+
       // Dispatch the transaction
       dispatch({
         type: transactionType,
         amount: formData.amount,
         description: formData.description,
-        toAccount: formData.type === "transfer" ? formData.toAccount : "",
         fromAccount:
           formData.type === "withdrawal" || formData.type === "transfer"
             ? formData.fromAccount
             : "",
+        toAccount: formData.type === "transfer" ? formData.toAccount : "",
+
+        id: transactionId, // Use the generated ID here
+        // currency: formData.currency,
+      });
+      console.log("Dispatching transaction:", {
+        type: transactionType,
+        amount: formData.amount,
+        description: formData.description,
+        fromAccount: formData.fromAccount,
+        toAccount: formData.toAccount,
       });
 
       // Show success message
@@ -54,7 +67,7 @@ export default function Transpage() {
       // Navigate to home page after 10 seconds
       setTimeout(() => {
         router.push("/");
-      }, 10000);
+      }, 1500);
     } catch (error) {
       setStatus({
         message: "Transaction failed. Please try again.",
@@ -123,7 +136,7 @@ export default function Transpage() {
 
         <form onSubmit={handleSubmit}>
           <FormInput
-            id={uuidv4()}
+            id={uuidv4()} // This can remain as it is for the form field
             label="Type"
             value={formData.type}
             onChange={(value) =>
@@ -134,13 +147,17 @@ export default function Transpage() {
           />
           <FormInput
             type="number"
-            id={uuidv4()}
+            id={uuidv4()} // This ID is fine for input fields
             label="Amount"
             placeholder="Enter amount"
-            value={formData.amount}
-            onChange={(value) =>
-              setFormData((prev) => ({ ...prev, amount: parseFloat(value) }))
-            }
+            value={formData.amount || ""}
+            onChange={(value) => {
+              const numericValue = parseFloat(value);
+              setFormData((prev) => ({
+                ...prev,
+                amount: isNaN(numericValue) ? 0 : numericValue,
+              }));
+            }}
           />
           <FormInput
             id={uuidv4()}
