@@ -6,6 +6,15 @@ import { v4 as uuidv4 } from "uuid";
 import { useRouter } from "next/navigation";
 import Button from "../components/Button";
 import { useAccount } from "../../contexts/AccountContext";
+import { motion } from "framer-motion";
+import {
+  FiType,
+  FiClipboard,
+  FiUser,
+  FiGlobe,
+  FiHash,
+  FiCalendar, // Importing calendar icon
+} from "react-icons/fi"; // Neutral icons
 
 export default function Transpage() {
   const router = useRouter();
@@ -18,17 +27,17 @@ export default function Transpage() {
     fromAccount: "",
     toAccount: "",
     currency: "USD",
+    date: "", // Add date to form data
   });
 
   const [status, setStatus] = useState({ message: "", isError: false });
-  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    console.log("Submitting transaction with formData:", formData);
     e.preventDefault();
-    setError(null); // Clear any previous errors
+    // Clear previous status message
+    setStatus({ message: "", isError: false });
 
-    if (!validateForm()) return; // If validation fails, stop submission
+    if (!validateForm()) return;
 
     try {
       const transactionType = formData.type.toUpperCase() as
@@ -36,10 +45,8 @@ export default function Transpage() {
         | "WITHDRAW"
         | "TRANSFER";
 
-      // Generate a unique ID for this transaction
       const transactionId = uuidv4();
 
-      // Dispatch the transaction
       dispatch({
         type: transactionType,
         amount: formData.amount,
@@ -49,23 +56,13 @@ export default function Transpage() {
             ? formData.fromAccount
             : "",
         toAccount: formData.type === "transfer" ? formData.toAccount : "",
-
-        id: transactionId, // Use the generated ID here
-        // currency: formData.currency,
-      });
-      console.log("Dispatching transaction:", {
-        type: transactionType,
-        amount: formData.amount,
-        description: formData.description,
-        fromAccount: formData.fromAccount,
-        toAccount: formData.toAccount,
+        id: transactionId,
+        date: new Date(formData.date), // Add the date here
       });
 
-      // Show success message
       setStatus({ message: "Transaction successful!", isError: false });
       resetForm();
 
-      // Navigate to home page after 10 seconds
       setTimeout(() => {
         router.push("/");
       }, 1500);
@@ -78,30 +75,39 @@ export default function Transpage() {
   };
 
   const validateForm = () => {
+    // Clear previous status message
     setStatus({ message: "", isError: false });
 
-    // Validate amount
     if (formData.amount <= 0) {
-      setError("Amount must be greater than 0");
+      setStatus({ message: "Amount must be greater than 0", isError: true });
       return false;
     }
 
-    // Validate transfer account
+    if (!formData.date) {
+      setStatus({ message: "Date is required", isError: true });
+      return false;
+    }
+
     if (formData.type === "transfer" && !formData.toAccount) {
-      setError("To Account is required for transfers");
+      setStatus({
+        message: "To Account is required for transfers",
+        isError: true,
+      });
       return false;
     }
 
-    // Validate from account for withdrawals and transfers
     if (
       (formData.type === "withdrawal" || formData.type === "transfer") &&
       !formData.fromAccount
     ) {
-      setError("From Account is required for withdrawals and transfers");
+      setStatus({
+        message: "From Account is required for withdrawals and transfers",
+        isError: true,
+      });
       return false;
     }
 
-    return true; // Return true if all validations pass
+    return true;
   };
 
   const resetForm = () => {
@@ -112,6 +118,7 @@ export default function Transpage() {
       fromAccount: "",
       toAccount: "",
       currency: "USD",
+      date: "", // Reset date field
     });
   };
 
@@ -128,17 +135,45 @@ export default function Transpage() {
   ];
 
   return (
-    <section className="grid grid-col gap-4 xs:mx-6 sm:mx-40 md:mx-60 xl:mx-96">
-      <article className="flex flex-col gap-4">
+    <motion.section
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ type: "spring", stiffness: 120, damping: 20, delay: 0.2 }}
+      className="grid grid-col gap-4 xs:mx-6 sm:mx-40 md:mx-60 xl:mx-96"
+    >
+      <motion.article
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ type: "spring", stiffness: 120, delay: 0.3 }}
+        className="flex flex-col gap-4"
+      >
         <h1 className="pt-8">Transaction Form</h1>
-
-        {/* Render error message if it exists */}
-        {error && <p className="text-red-500">{error}</p>}
-
-        <form onSubmit={handleSubmit}>
+        {status.isError && (
+          <p className="text-red-500">{status.message}</p>
+        )}{" "}
+        {/* Show error messages */}
+        {!status.isError && status.message && (
+          <p className="text-green-500">{status.message}</p>
+        )}{" "}
+        {/* Show success messages */}
+        <motion.form
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            type: "spring",
+            stiffness: 100,
+            damping: 20,
+            delay: 0.4,
+          }}
+          onSubmit={handleSubmit}
+        >
           <FormInput
-            id={uuidv4()} // This can remain as it is for the form field
-            label="Type"
+            id={uuidv4()}
+            label={
+              <span className="flex items-center gap-2">
+                <FiType /> Type
+              </span>
+            }
             value={formData.type}
             onChange={(value) =>
               setFormData((prev) => ({ ...prev, type: value }))
@@ -148,8 +183,12 @@ export default function Transpage() {
           />
           <FormInput
             type="number"
-            id={uuidv4()} // This ID is fine for input fields
-            label="Amount"
+            id={uuidv4()}
+            label={
+              <span className="flex items-center gap-2">
+                <FiHash /> Amount
+              </span>
+            }
             placeholder="Enter amount"
             value={formData.amount || ""}
             onChange={(value) => {
@@ -162,7 +201,11 @@ export default function Transpage() {
           />
           <FormInput
             id={uuidv4()}
-            label="Currency"
+            label={
+              <span className="flex items-center gap-2">
+                <FiGlobe /> Currency
+              </span>
+            }
             value={formData.currency}
             onChange={(value) =>
               setFormData((prev) => ({ ...prev, currency: value }))
@@ -173,18 +216,40 @@ export default function Transpage() {
           <FormInput
             type="text"
             id={uuidv4()}
-            label="Description"
+            label={
+              <span className="flex items-center gap-2">
+                <FiClipboard /> Description
+              </span>
+            }
             placeholder="Enter description"
             value={formData.description}
             onChange={(value) =>
               setFormData((prev) => ({ ...prev, description: value }))
             }
           />
+
+          <FormInput
+            type="date" // Set the input type to "date"
+            id={uuidv4()}
+            label={
+              <span className="flex items-center gap-2">
+                <FiCalendar /> Date
+              </span>
+            }
+            value={formData.date}
+            onChange={(value) =>
+              setFormData((prev) => ({ ...prev, date: value }))
+            }
+          />
           {formData.type !== "deposit" && (
             <FormInput
               type="text"
               id={uuidv4()}
-              label="From Account"
+              label={
+                <span className="flex items-center gap-2">
+                  <FiUser /> From Account
+                </span>
+              }
               placeholder="Enter from account"
               value={formData.fromAccount}
               onChange={(value) =>
@@ -196,7 +261,11 @@ export default function Transpage() {
             <FormInput
               type="text"
               id={uuidv4()}
-              label="To Account"
+              label={
+                <span className="flex items-center gap-2">
+                  <FiUser /> To Account
+                </span>
+              }
               placeholder="Enter to account"
               value={formData.toAccount}
               onChange={(value) =>
@@ -204,19 +273,10 @@ export default function Transpage() {
               }
             />
           )}
-          <Button text="Submit" onClick={() => {}} />
-        </form>
 
-        {status.message && (
-          <p
-            className={`mt-4 ${
-              status.isError ? "text-red-500" : "text-green-500"
-            }`}
-          >
-            {status.message}
-          </p>
-        )}
-      </article>
-    </section>
+          <Button text="Submit" onClick={() => {}} />
+        </motion.form>
+      </motion.article>
+    </motion.section>
   );
 }

@@ -1,11 +1,10 @@
 "use client";
 import React, { createContext, useReducer, useContext, ReactNode } from "react";
-// import { v4 as uuidv4 } from "uuid";
 
 // Define types
 interface Transaction {
   id: string; // Unique identifier for each transaction
-  date: Date;
+  date: Date; // Keeping date as string to store in ISO format
   type: "deposit" | "withdrawal" | "transfer";
   amount: number;
   description?: string;
@@ -24,6 +23,7 @@ type Action =
       amount: number;
       description: string;
       id: string;
+      date: Date; // Change this to Date
     }
   | {
       type: "WITHDRAW";
@@ -31,6 +31,7 @@ type Action =
       description: string;
       id: string;
       fromAccount: string;
+      date: Date; // Change this to Date
     }
   | {
       type: "TRANSFER";
@@ -39,6 +40,7 @@ type Action =
       id: string;
       fromAccount: string;
       toAccount: string;
+      date: Date; // Change this to Date
     };
 
 // Initial state
@@ -48,12 +50,13 @@ const initialState: State = {
 };
 
 // Reducer function
+// Reducer function
 function accountReducer(state: State, action: Action): State {
   switch (action.type) {
     case "DEPOSIT":
       const depositTransaction: Transaction = {
         id: action.id,
-        date: new Date(),
+        date: action.date, // Set the date as Date object
         type: "deposit",
         amount: action.amount,
         description: action.description,
@@ -70,7 +73,7 @@ function accountReducer(state: State, action: Action): State {
       }
       const withdrawTransaction: Transaction = {
         id: action.id,
-        date: new Date(),
+        date: action.date, // Set the date as Date object
         type: "withdrawal",
         amount: action.amount,
         description: action.description,
@@ -83,9 +86,13 @@ function accountReducer(state: State, action: Action): State {
       };
 
     case "TRANSFER":
+      // Check if there is enough balance for the transfer
+      if (state.balance < action.amount) {
+        throw new Error("Insufficient balance for transfer");
+      }
       const transferTransaction: Transaction = {
         id: action.id,
-        date: new Date(),
+        date: action.date, // Set the date as Date object
         type: "transfer",
         amount: action.amount,
         fromAccount: action.fromAccount,
@@ -94,7 +101,7 @@ function accountReducer(state: State, action: Action): State {
       };
       return {
         ...state,
-        balance: state.balance - action.amount,
+        balance: state.balance - action.amount, // Deduct from the balance
         transactions: [...state.transactions, transferTransaction],
       };
 

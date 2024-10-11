@@ -1,9 +1,11 @@
+// export default TransactionCard;
 import React from "react";
 import { format } from "date-fns";
+import { FaArrowUp, FaArrowDown, FaExchangeAlt } from "react-icons/fa"; // Import icons
 
 interface TransactionCardProps {
   id: string;
-  date: Date;
+  date?: Date; // Keeping date as a string for compatibility
   type: "deposit" | "withdrawal" | "transfer";
   amount: number;
   balance: number;
@@ -11,10 +13,9 @@ interface TransactionCardProps {
   description?: string;
   fromAccount?: string | null;
   toAccount?: string | null;
-  customStyle?: React.CSSProperties;
 }
 
-export default function TransactionCard({
+const TransactionCard: React.FC<TransactionCardProps> = ({
   id,
   date,
   type,
@@ -24,14 +25,19 @@ export default function TransactionCard({
   description,
   fromAccount,
   toAccount,
-  customStyle,
-}: TransactionCardProps) {
-  const formattedDate = format(date, "MMM dd, yyyy");
+}) => {
+  // Format date for display
+  const formattedDate = date
+    ? format(new Date(date), "MMM dd, yyyy")
+    : "Date not available"; // Handle undefined date
+
+  // Formatting the amount
   const formattedAmount = new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: currency,
   }).format(type === "withdrawal" ? -amount : amount);
 
+  // Transaction type color
   const typeColor =
     type === "deposit"
       ? "text-green-500"
@@ -39,56 +45,57 @@ export default function TransactionCard({
       ? "text-red-500"
       : "text-blue-500";
 
-  return (
-    <div
-      className="bg-white shadow-md rounded-lg p-4 mb-4 transition-all duration-300 ease-in-out hover:shadow-lg"
-      style={customStyle}
-      role="article"
-      aria-label={`Transaction: ${type} of ${formattedAmount}`}
-    >
-      <div className="flex justify-between items-center">
-        <h2 className="text-lg font-medium">
-          <p>Transaction ID: {id}</p>
-        </h2>
+  // Render icon based on transaction type
+  const renderIcon = () => {
+    switch (type) {
+      case "deposit":
+        return <FaArrowUp className={`inline-block ${typeColor}`} />;
+      case "withdrawal":
+        return <FaArrowDown className={`inline-block ${typeColor}`} />;
+      case "transfer":
+        return <FaExchangeAlt className={`inline-block ${typeColor}`} />;
+      default:
+        return null;
+    }
+  };
 
-        <div className="flex items-center">
-          <span className={`mr-2 ${typeColor}`}>
+  return (
+    <div className="bg-white shadow-lg rounded-lg p-6 mb-4 transition-transform transform hover:scale-105 border-l-4 border-l-gray-200 w-full sm:w-96 lg:w-112">
+      <div className="text-sm text-gray-500 mb-2">Transaction ID: {id}</div>
+      <div className="text-sm text-gray-500 mb-4">{formattedDate}</div>
+      <div className="flex items-center mb-2">
+        <div className="flex items-center mr-auto">
+          {renderIcon()}
+          <span className={`font-bold text-xl ml-2 ${typeColor}`}>
             {type === "deposit"
-              ? "↑ Deposit"
+              ? "Deposit"
               : type === "withdrawal"
-              ? "↓ Withdrawal"
-              : "↔ Transfer"}
-          </span>
-          <span className={`font-semibold ${typeColor}`}>
-            {formattedAmount}
+              ? "Withdrawal"
+              : "Transfer"}
           </span>
         </div>
+        <span className={`text-2xl font-semibold ${typeColor}`}>
+          {formattedAmount}
+        </span>
       </div>
-      <span className="text-sm text-gray-500">{formattedDate}</span>
       {description && (
-        <p className={`text-lg font-medium mt-2 ${typeColor}`}>{description}</p>
+        <p className="text-md text-gray-700 mb-2">{description}</p>
       )}
-
-      <div className="mt-2 text-sm text-gray-600">
+      <div className="text-md font-semibold text-gray-800 mb-2">
         Balance:{" "}
         {new Intl.NumberFormat("en-US", {
           style: "currency",
           currency: currency,
         }).format(balance)}
       </div>
-
       {type === "transfer" && (
         <div className="mt-2 text-sm text-gray-600">
-          <p>From: {fromAccount}</p>
-          <p>To: {toAccount}</p>
-        </div>
-      )}
-      {type === "withdrawal" && (
-        <div>
-          <p>Withdrawal from: {fromAccount}</p>
-          <p>Amount: {amount}</p>
+          {fromAccount && <p>From: {fromAccount}</p>}
+          {toAccount && <p>To: {toAccount}</p>}
         </div>
       )}
     </div>
   );
-}
+};
+
+export default TransactionCard;

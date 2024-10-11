@@ -37,23 +37,6 @@ export default function Home() {
           </Link>
         </article>
         <article>
-          {/* {state.transactions.map((transaction) => {
-            console.log("Rendering transaction:", transaction); // Log each transaction for debugging
-            return (
-              <TransactionCard
-                key={transaction.id}
-                id={transaction.id}
-                date={transaction.date}
-                type={transaction.type} // Should be 'deposit', 'withdrawal', or 'transfer'
-                amount={transaction.amount}
-                balance={state.balance} // Ensure this is updated accordingly
-                currency="USD" // Or dynamically based on the transaction
-                description={transaction.description}
-                fromAccount={transaction.fromAccount}
-                toAccount={transaction.toAccount}
-              />
-            );
-          })} */}
           {state.transactions.length > 0 ? (
             state.transactions.map((transaction) => {
               console.log("Rendering transaction:", transaction);

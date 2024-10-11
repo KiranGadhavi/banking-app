@@ -7,12 +7,12 @@ interface Option {
 
 interface FormInputProps {
   id: string;
-  label: string;
+  label: React.ReactNode; // Change to React.ReactNode
   placeholder?: string;
   value: string | number; // Accepts string or number
   className?: string;
   onChange?: (value: string) => void; // Keep as string since it will pass a string from input
-  type?: "text" | "number" | "password" | "email" | "select"; // Added "select"
+  type?: "text" | "number" | "password" | "email" | "select" | "date"; // Added "date"
   options?: Option[]; // Options for select input
 }
 
@@ -32,7 +32,7 @@ export default function FormInput({
       {type === "select" ? (
         <select
           id={id}
-          className={`border  border-gray-300 rounded-md p-2 w-full text-gray-600 ${className}`}
+          className={`border border-gray-300 rounded-md p-2 w-full text-gray-600 ${className}`}
           value={value}
           onChange={(e) => onChange && onChange(e.target.value)}
         >
@@ -43,6 +43,14 @@ export default function FormInput({
             </option>
           ))}
         </select>
+      ) : type === "date" ? (
+        <input
+          type="date"
+          className={`border border-gray-300 rounded-md p-2 w-full text-gray-600 ${className}`}
+          placeholder={placeholder}
+          value={value as string} // Casting since value can be string | number
+          onChange={(e) => onChange && onChange(e.target.value)}
+        />
       ) : (
         <input
           type={type || "text"}

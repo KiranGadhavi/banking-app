@@ -1,75 +1,55 @@
 "use client";
-import React, { useEffect } from "react";
-import Link from "next/link";
-import Button from "./components/Button";
+import React from "react";
 import { useAccount } from "../contexts/AccountContext"; // Ensure this is correctly imported
 import TransactionCard from "./components/TransactionCard";
+import { motion } from "framer-motion"; // Import motion from Framer Motion
 
 export default function Home() {
   const { state } = useAccount(); // Get state from context
-  useEffect(() => {
-    console.log("Component mounted. Initial transactions:", state.transactions);
-  }, []);
 
-  useEffect(() => {
-    console.log("Transactions updated:", state.transactions);
-  }, [state.transactions]);
+  // Animation variants
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
-    <section className="grid grid-rows sm:mx-14 gap-4 xs:mx-4">
-      <main>
-        {/* Your existing navigation buttons */}
-        <article className="flex flex-row gap-2 py-6 ">
-          <Link href="/dashboard">
-            <Button text="Dashboard" />
-          </Link>
-          <Link href="/account-overview">
-            <Button text="Account Overview" />
-          </Link>
-          <Link href="/transaction-forms">
-            <Button text="Transaction Forms" />
-          </Link>
-          <Link href="/transaction-history">
-            <Button text="Transaction History" />
-          </Link>
-        </article>
-        <article>
-          {/* {state.transactions.map((transaction) => {
-            console.log("Rendering transaction:", transaction); // Log each transaction for debugging
-            return (
-              <TransactionCard
-                key={transaction.id}
-                id={transaction.id}
-                date={transaction.date}
-                type={transaction.type} // Should be 'deposit', 'withdrawal', or 'transfer'
-                amount={transaction.amount}
-                balance={state.balance} // Ensure this is updated accordingly
-                currency="USD" // Or dynamically based on the transaction
-                description={transaction.description}
-                fromAccount={transaction.fromAccount}
-                toAccount={transaction.toAccount}
-              />
-            );
-          })} */}
+    <section className="min-h-screen bg-gray-50 p-4 sm:p-8">
+      <main className="max-w-4xl mx-auto">
+        <article className="flex flex-col gap-4 py-6">
+          {/* Your existing navigation buttons */}
           {state.transactions.length > 0 ? (
-            state.transactions.map((transaction) => {
-              console.log("Rendering transaction:", transaction);
-              return (
-                <TransactionCard
-                  key={transaction.id}
-                  id={transaction.id}
-                  date={transaction.date}
-                  type={transaction.type}
-                  amount={transaction.amount}
-                  balance={state.balance}
-                  currency="USD"
-                  description={transaction.description}
-                  fromAccount={transaction.fromAccount}
-                  toAccount={transaction.toAccount}
-                />
-              );
-            })
+            <motion.div
+              className="grid grid-cols-1 md:grid-cols-2 gap-4"
+              initial="hidden"
+              animate="visible"
+              variants={{ visible: { transition: { staggerChildren: 0.2 } } }}
+            >
+              {state.transactions.map((transaction) => (
+                <motion.div key={transaction.id} variants={cardVariants}>
+                  <TransactionCard
+                    id={transaction.id}
+                    date={transaction.date} // Ensure this is a string
+                    type={transaction.type}
+                    amount={transaction.amount}
+                    balance={state.balance}
+                    currency="USD"
+                    description={transaction.description}
+                    fromAccount={transaction.fromAccount}
+                    toAccount={transaction.toAccount}
+                  />
+                </motion.div>
+              ))}
+            </motion.div>
           ) : (
-            <p>No transactions available.</p>
+            <div className="flex flex-col py-8 mx-auto text-center">
+              <h2 className="text-3xl font-bold pb-6 text-gray-700">
+                Welcome to Your Dashboard
+              </h2>
+              <p className="text-lg text-gray-600">
+                No transactions available.
+              </p>
+            </div>
           )}
         </article>
       </main>
