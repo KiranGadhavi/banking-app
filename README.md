@@ -1,36 +1,77 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏦 Banking App
 
-## Getting Started
+Welcome to the Banking App! This project is a modern web application designed to provide users with a streamlined experience for managing their banking transactions.
 
-First, run the development server:
+### 🌐 Live Demo
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Check out the live application [here](https://banking-app-ten.vercel.app/).
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📋 Table of Contents
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Getting Started](#getting-started)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ✨ Features
 
-## Learn More
+- **User Account Management**: Create, view, and manage your banking accounts.
+- **Transaction History**: View, sort, and filter transactions by date, type, and amount.
+- **Responsive Design**: Works seamlessly on various devices and screen sizes.
+- **Real-time Updates**: Get live updates of your transaction history.
+- **Intuitive Interface**: Easy to navigate and user-friendly interface.
 
-To learn more about Next.js, take a look at the following resources:
+## 🛠️ Technologies Used
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project is built with the following technologies:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Frontend**: React, TypeScript, Tailwind CSS
+- **State Management**: Context API
+- **Hosting**: Vercel
 
-## Deploy on Vercel
+## 🚀 Getting Started
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+To get a local copy up and running follow these simple steps.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### 📦 Prerequisites
+
+Make sure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.com/) installed on your machine.
+
+### 🔧 Installation
+
+1. Clone the repo:
+   ```bash
+   git clone https://github.com/your-username/banking-app.git
+   ```
+2. Navigate to the project directory:
+
+   ```bash
+   cd banking-app
+   ```
+
+3. Install dependencies:
+
+   ```bash
+   npm install
+   ```
+
+4. Run the development server:
+
+   ```bash
+   npm run dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+
+## 🙏 Acknowledgements
+
+- 🎉 **Next.js** team for the excellent framework
+- 📦 **react-icons** for the icons
+- 🛣️ **react-router-dom** for routing
+- 📊 **react-query** for state management
+- 📝 **react-hook-form** for form handling
+- 🔒 **TypeScript** for type safety
+- 🎨 **Tailwind CSS** for styling
+- ☁️ **Vercel** for hosting

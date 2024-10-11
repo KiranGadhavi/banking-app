@@ -138,7 +138,7 @@ import React, { useEffect, useState } from "react";
 
 interface Transaction {
   id: string; // Unique identifier for each transaction
-  date: Date; // Keeping date as string to store in ISO format
+  date: Date; // Date as string for easier parsing
   type: "deposit" | "withdrawal" | "transfer";
   amount: number;
   description?: string;
@@ -152,8 +152,8 @@ const TransactionHistory: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
-  // Effect to initialize transactions from context state
   useEffect(() => {
+    console.log("Current Transactions State:", state.transactions); // Log the transactions state
     if (state.transactions) {
       setTransactions(state.transactions);
     }
@@ -168,10 +168,9 @@ const TransactionHistory: React.FC = () => {
     setTransactions(sorted);
   };
 
-  // Run sort whenever sortOrder changes
   useEffect(() => {
     sortTransactions();
-  }, [sortOrder]); // Only depend on sortOrder
+  }, [sortOrder]);
 
   const toggleSortOrder = () => {
     setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
@@ -214,49 +213,57 @@ const TransactionHistory: React.FC = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {transactions.map((transaction) => (
-              <tr key={transaction.id}>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {transaction.id}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {new Date(transaction.date).toLocaleDateString()}
-                </td>
-                <td
-                  className={`px-6 py-4 whitespace-nowrap text-sm ${
-                    transaction.type === "deposit"
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }`}
-                >
-                  {transaction.type.charAt(0).toUpperCase() +
-                    transaction.type.slice(1)}
-                </td>
-                <td
-                  className={`px-6 py-4 whitespace-nowrap text-sm ${
-                    transaction.type === "withdrawal"
-                      ? "text-red-600"
-                      : "text-green-600"
-                  }`}
-                >
-                  {new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  }).format(transaction.amount)}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {transaction.balance !== undefined
-                    ? new Intl.NumberFormat("en-US", {
-                        style: "currency",
-                        currency: "USD",
-                      }).format(transaction.balance)
-                    : "-"}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {transaction.description || "-"}
+            {transactions.length === 0 ? (
+              <tr>
+                <td colSpan={6} className="text-center py-4 text-gray-500">
+                  No transactions found.
                 </td>
               </tr>
-            ))}
+            ) : (
+              transactions.map((transaction) => (
+                <tr key={transaction.id}>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {transaction.id}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {new Date(transaction.date).toLocaleDateString()}
+                  </td>
+                  <td
+                    className={`px-6 py-4 whitespace-nowrap text-sm ${
+                      transaction.type === "deposit"
+                        ? "text-green-600"
+                        : "text-red-600"
+                    }`}
+                  >
+                    {transaction.type.charAt(0).toUpperCase() +
+                      transaction.type.slice(1)}
+                  </td>
+                  <td
+                    className={`px-6 py-4 whitespace-nowrap text-sm ${
+                      transaction.type === "withdrawal"
+                        ? "text-red-600"
+                        : "text-green-600"
+                    }`}
+                  >
+                    {new Intl.NumberFormat("en-US", {
+                      style: "currency",
+                      currency: "USD",
+                    }).format(transaction.amount)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {transaction.balance !== undefined
+                      ? new Intl.NumberFormat("en-US", {
+                          style: "currency",
+                          currency: "USD",
+                        }).format(transaction.balance)
+                      : "-"}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {transaction.description || "-"}
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
