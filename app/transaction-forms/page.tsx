@@ -24,6 +24,7 @@ export default function Transpage() {
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    console.log("Submitting transaction with formData:", formData);
     e.preventDefault();
     setError(null); // Clear any previous errors
 

@@ -1,12 +1,16 @@
 "use client";
 import React, { useEffect } from "react";
 import Link from "next/link";
-import Button from "./components/Button";
-import { useAccount } from "../contexts/AccountContext"; // Ensure this is correctly imported
-import TransactionCard from "./components/TransactionCard";
+// import Button from "./components/Button";
+// import { useAccount } from "../contexts/AccountContext";
+// Ensure this is correctly imported
+import Button from "./app/components/Button";
+import TransactionCard from "./app/components/TransactionCard";
+import { useAccount } from "./contexts/AccountContext";
 
 export default function Home() {
-  const { state } = useAccount(); // Get state from context
+  // Get state from context
+  const { state } = useAccount();
   useEffect(() => {
     console.log("Component mounted. Initial transactions:", state.transactions);
   }, []);
