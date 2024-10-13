@@ -84,7 +84,9 @@ const HeaderComponent = () => {
             onClick={toggleMenu}
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           >
-            <span className="text-2xl">{isMenuOpen ? "✖️" : "☰"}</span>
+            <span className="text-2xl text-gray-800">
+              {isMenuOpen ? "✖️" : "☰"}
+            </span>
           </button>
         </div>
       </div>
@@ -109,12 +111,14 @@ const HeaderComponent = () => {
                 className={`transition-colors duration-300 ease-in-out ${
                   pathname === href
                     ? "text-blue-500 dark:text-blue-300"
-                    : "text-gray-500 dark:text-gray-400"
+                    : "text-gray-800 dark:text-gray-400"
                 }`}
               />
               <span
                 className={`transition-colors duration-300 ease-in-out ${
-                  pathname === href ? "text-blue-500 dark:text-blue-300" : ""
+                  pathname === href
+                    ? "text-blue-500 dark:text-blue-300"
+                    : "text-gray-800 dark:text-gray-400"
                 }`}
               >
                 {label}

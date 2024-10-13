@@ -11,9 +11,6 @@ Check out the live application [here](https://banking-app-ten.vercel.app/).
 - [Features](#features)
 - [Technologies Used](#technologies-used)
 - [Getting Started](#getting-started)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
 
 ## ✨ Features
 
@@ -74,15 +71,4 @@ Make sure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.co
 - 📝 **react-hook-form** for form handling
 - 🔒 **TypeScript** for type safety
 - 🎨 **Tailwind CSS** for styling
-- ☁️ **Vercel** for hosting
-
-/transaction-form
-└── page.tsx
-/components
-├── TransactionTypeInput.tsx
-├── AmountInput.tsx
-├── CurrencyInput.tsx
-├── DescriptionInput.tsx
-├── DateInput.tsx
-├── FromAccountInput.tsx
-└── ToAccountInput.tsx
+- ☁️ **Vercel** for host
