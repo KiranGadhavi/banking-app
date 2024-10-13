@@ -13,6 +13,7 @@ export interface Transaction {
   fromAccount?: string | null; // Optional: Account from which the money is transferred (if applicable)
   toAccount?: string | null; // Optional: Account to which the money is transferred (if applicable)
   balance: number; // Current balance of the account
+  currency: string; // Currency of the transaction
 }
 
 // Define the shape of the state that will be managed by the reducer
@@ -29,6 +30,7 @@ type Action =
       description: string; // Description of the deposit
       id: string; // Unique identifier for the transaction
       date: Date; // Date of the deposit
+      currency: string;
     }
   | {
       type: "WITHDRAW"; // Action type for withdrawing money
@@ -37,6 +39,7 @@ type Action =
       id: string; // Unique identifier for the transaction
       fromAccount: string; // Account from which the money is being withdrawn
       date: Date; // Date of the withdrawal
+      currency: string;
     }
   | {
       type: "TRANSFER"; // Action type for transferring money
@@ -46,6 +49,7 @@ type Action =
       fromAccount: string; // Account from which the money is being transferred
       toAccount: string; // Account to which the money is being transferred
       date: Date; // Date of the transfer
+      currency: string;
     };
 
 // Define the initial state of the account
@@ -65,6 +69,7 @@ function accountReducer(state: State, action: Action): State {
         amount: action.amount, // Set the amount of money deposited
         description: action.description, // Set the description
         balance: state.balance + action.amount, // Increase the balance by the deposit amount
+        currency: action.currency,
       };
       return {
         ...state, // Keep the existing state
@@ -84,6 +89,7 @@ function accountReducer(state: State, action: Action): State {
         description: action.description,
         fromAccount: action.fromAccount, // Ensure this is correctly set
         balance: state.balance - action.amount,
+        currency: action.currency,
       };
       return {
         ...state,
@@ -105,6 +111,7 @@ function accountReducer(state: State, action: Action): State {
         toAccount: action.toAccount,
         description: action.description,
         balance: newBalance, // Add this line
+        currency: action.currency,
       };
       return {
         ...state,

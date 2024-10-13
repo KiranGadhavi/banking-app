@@ -73,6 +73,7 @@ export default function Page() {
         toAccount: transactionType === "TRANSFER" ? formData.toAccount : "", // Set toAccount only for transfers
         id: transactionId,
         date: formData.date || new Date(),
+        currency: formData.currency,
         // Set the date to the current timestamp
         // Ensure date is formatted correctly
       });

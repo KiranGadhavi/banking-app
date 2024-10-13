@@ -36,7 +36,7 @@ export default function Home() {
                     type={transaction.type}
                     amount={transaction.amount}
                     balance={transaction.balance}
-                    currency="USD"
+                    currency={transaction.currency}
                     description={transaction.description}
                     fromAccount={transaction.fromAccount}
                     toAccount={transaction.toAccount}
