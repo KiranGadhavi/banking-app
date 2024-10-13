@@ -75,3 +75,14 @@ Make sure you have [Node.js](https://nodejs.org/) and [npm](https://www.npmjs.co
 - 🔒 **TypeScript** for type safety
 - 🎨 **Tailwind CSS** for styling
 - ☁️ **Vercel** for hosting
+
+/transaction-form
+└── page.tsx
+/components
+├── TransactionTypeInput.tsx
+├── AmountInput.tsx
+├── CurrencyInput.tsx
+├── DescriptionInput.tsx
+├── DateInput.tsx
+├── FromAccountInput.tsx
+└── ToAccountInput.tsx

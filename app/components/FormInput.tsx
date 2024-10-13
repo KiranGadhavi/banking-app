@@ -5,27 +5,28 @@ interface Option {
   label: string;
 }
 
-interface FormInputProps {
+interface FormInputProps<T extends string | number = string> {
   id: string;
-  label: React.ReactNode; // Change to React.ReactNode
+  label: React.ReactNode; // Label can be any React node
   placeholder?: string;
   value: string | number; // Accepts string or number
   className?: string;
-  onChange?: (value: string) => void; // Keep as string since it will pass a string from input
-  type?: "text" | "number" | "password" | "email" | "select" | "date"; // Added "date"
+  onChange?: (value: T) => void; // Callback that takes a string
+  type?: "text" | "number" | "password" | "email" | "select" | "date"; // Allowed input types
   options?: Option[]; // Options for select input
+  customInput?: React.ReactNode;
 }
 
-export default function FormInput({
+export default function FormInput<T extends string | number = string>({
   id,
   label,
   placeholder,
   value,
-  className,
-  type,
+  className = "", // Default to an empty string if not provided
+  type = "text", // Default type to "text"
   onChange,
   options,
-}: FormInputProps) {
+}: FormInputProps<T>) {
   return (
     <div className="flex flex-col gap-1 my-4">
       <label htmlFor={id}>{label}</label>
@@ -34,7 +35,7 @@ export default function FormInput({
           id={id}
           className={`border border-gray-300 rounded-md p-2 w-full text-gray-600 ${className}`}
           value={value}
-          onChange={(e) => onChange && onChange(e.target.value)}
+          onChange={(e) => onChange && onChange(e.target.value as T)} // Make sure e.target.value is passed
         >
           <option value="">Select an option</option>
           {options?.map((option) => (
@@ -48,16 +49,16 @@ export default function FormInput({
           type="date"
           className={`border border-gray-300 rounded-md p-2 w-full text-gray-600 ${className}`}
           placeholder={placeholder}
-          value={value as string} // Casting since value can be string | number
-          onChange={(e) => onChange && onChange(e.target.value)}
+          value={value as string} // Assuming value is string for date input
+          onChange={(e) => onChange && onChange(e.target.value as T)} // Ensure value is string
         />
       ) : (
         <input
-          type={type || "text"}
+          type={type}
           className={`border border-gray-300 rounded-md p-2 w-full text-gray-600 ${className}`}
           placeholder={placeholder}
           value={value}
-          onChange={(e) => onChange && onChange(e.target.value)}
+          onChange={(e) => onChange && onChange(e.target.value as T)} // Ensure value is string
         />
       )}
     </div>
