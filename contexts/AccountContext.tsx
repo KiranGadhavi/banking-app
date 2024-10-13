@@ -33,7 +33,7 @@ type Action =
       currency: string;
     }
   | {
-      type: "WITHDRAW"; // Action type for withdrawing money
+      type: "WITHDRAWAL"; // Action type for withdrawing money
       amount: number; // Amount of money to withdraw
       description: string; // Description of the withdrawal
       id: string; // Unique identifier for the transaction
@@ -77,9 +77,10 @@ function accountReducer(state: State, action: Action): State {
         transactions: [...state.transactions, depositTransaction], // Add this transaction to the list
       };
 
-    case "WITHDRAW":
+    case "WITHDRAWAL":
+      console.log("Withdraw action received:", action);
       if (state.balance < action.amount) {
-        throw new Error("Insufficient balance"); // Check if there's enough balance to withdraw
+        throw new Error("Insufficient balance");
       }
       const withdrawTransaction: Transaction = {
         id: action.id,
@@ -87,7 +88,7 @@ function accountReducer(state: State, action: Action): State {
         type: "withdrawal",
         amount: action.amount,
         description: action.description,
-        fromAccount: action.fromAccount, // Ensure this is correctly set
+        fromAccount: action.fromAccount,
         balance: state.balance - action.amount,
         currency: action.currency,
       };

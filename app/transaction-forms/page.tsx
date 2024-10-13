@@ -46,51 +46,36 @@ export default function Page() {
     message: "",
     isError: false,
   });
-
-  // Function to handle form submission
+  // Function to validate form data
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault(); // Prevent form from reloading the page
-
-    // Clear previous status message
-    setStatus({ message: "", isError: false });
-
-    // Validate form data; if invalid, stop execution
+    e.preventDefault();
     if (!validateForm()) return;
     try {
       const transactionType = formData.type.toUpperCase() as
         | "DEPOSIT"
-        | "WITHDRAW"
-        | "TRANSFER"; // Convert transaction type to uppercase
+        | "WITHDRAWAL"
+        | "TRANSFER";
 
-      const transactionId = uuidv4(); // Generate a unique transaction ID
+      const transactionId = uuidv4();
 
-      // Dispatch an action to update the account with the new transaction
       dispatch({
         type: transactionType,
         amount: formData.amount,
         description: formData.description,
-        fromAccount: transactionType !== "DEPOSIT" ? formData.fromAccount : "", // Set fromAccount for withdrawals and transfers only
-        toAccount: transactionType === "TRANSFER" ? formData.toAccount : "", // Set toAccount only for transfers
+        fromAccount: transactionType !== "DEPOSIT" ? formData.fromAccount : "",
+        toAccount: transactionType === "TRANSFER" ? formData.toAccount : "",
         id: transactionId,
         date: formData.date || new Date(),
         currency: formData.currency,
-        // Set the date to the current timestamp
-        // Ensure date is formatted correctly
       });
 
-      // Set success status message
       setStatus({ message: "Transaction successful!", isError: false });
-
-      // Reset the form to its initial state
       resetForm();
-
-      // Redirect user to home page after a short delay
       setTimeout(() => {
         router.push("/");
       }, 1500);
     } catch (error) {
       console.error("Error while dispatching transaction:", error);
-      // Set error status message in case of failure
       setStatus({
         message: "Transaction failed. Please try again.",
         isError: true,
@@ -134,7 +119,7 @@ export default function Page() {
       });
       return false;
     }
-
+    console.log("Form Data:", formData);
     return true; // If all checks pass, return true
   };
 

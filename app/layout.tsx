@@ -31,7 +31,7 @@ export default function RootLayout({
       >
         <AccountProvider>
           <HeaderComponent />
-          <div className="pt-16">{children}</div>
+          <div className="pt-16 xs:pt-10">{children}</div>
         </AccountProvider>
       </body>
     </html>

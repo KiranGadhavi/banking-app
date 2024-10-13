@@ -43,7 +43,7 @@ const TransactionHistory: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col gap-8 items-center justify-center min-h-screen sm:p-10 font-sans">
+    <div className="flex flex-col gap-8 items-center justify-center xs:p-10 font-sans">
       <h1 className="text-3xl font-bold">Transaction History</h1>
 
       <button
@@ -54,7 +54,7 @@ const TransactionHistory: React.FC = () => {
       </button>
 
       {/* Desktop Table View */}
-      <div className="hidden sm:block w-full overflow-x-auto">
+      <div className=" w-full overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200 table-auto">
           <thead className="bg-gray-100">
             <tr>

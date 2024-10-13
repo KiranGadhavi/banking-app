@@ -54,6 +54,9 @@ export default function Home() {
               </p>
             </div>
           )}
+          {state.transactions.map((transaction) => (
+            <TransactionCard key={transaction.id} {...transaction} />
+          ))}
         </article>
       </main>
     </section>
