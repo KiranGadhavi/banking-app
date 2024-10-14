@@ -6,9 +6,7 @@ const AccountOverview: React.FC = () => {
 
   return (
     <div className="grid grid-row text-center items-center justify-center font-sans pt-20 mx-auto">
-      <h1 className="text-2xl font-bold mb-4 text-gray-600">
-        Account Overview
-      </h1>
+      <h1 className="text-2xl font-bold mb-4">Account Overview</h1>
       {/* Transaction Forms Section */}
       <div className="  mt-4 gap-4">
         <h2 className="text-xl font-semibold mb-2 text-gray-600 ">

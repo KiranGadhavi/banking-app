@@ -85,10 +85,10 @@ const TransactionHistory: React.FC = () => {
 
   return (
     <div className="flex flex-col gap-8 items-center justify-center xs:p-10 font-sans">
-      <h1 className="text-2xl font-bold text-gray-600">Transaction History</h1>
+      <h1 className="text-2xl font-bold">Transaction History</h1>
 
       {/* Filters Section */}
-      <div className="flex gap-4">
+      <div className="flex gap-4 sm:py-10 xs:py-5">
         <div className="flex gap-4 sm:flex-row xs:flex-col xs:items-center xs:justify-center xs:gap-4">
           <label className="flex items-center gap-2">
             <input
