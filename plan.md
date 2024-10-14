@@ -62,7 +62,7 @@ Since I won’t be interacting with an actual backend at the moment, I'll need t
 
 I'm using Next.js’s powerful routing system to set up pages for each core feature:
 
-    Pages:
+    App Routes:
         /dashboard: Displays account balance and recent transactions.
         /deposit: Form for depositing money.
         /withdraw: Form for withdrawing money.

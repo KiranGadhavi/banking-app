@@ -125,79 +125,17 @@ const TransactionHistory: React.FC = () => {
           </tbody>
         </table>
       </div>
-
-      {/* Mobile Cards View */}
-      <div className="sm:hidden w-full space-y-4">
-        {paginatedTransactions.map((transaction) => (
-          <div
-            key={transaction.id}
-            className="bg-white shadow-md rounded-lg p-4 overflow-x-auto"
-          >
-            <div className="flex justify-between min-w-[400px]">
-              <div>
-                <span className="font-bold">Transaction ID:</span>
-                <p>{transaction.id}</p>
-              </div>
-              <div>
-                <span className="font-bold">Date:</span>
-                <p>{new Date(transaction.date).toLocaleDateString()}</p>
-              </div>
-            </div>
-
-            <div className="flex justify-between min-w-[400px] mt-2">
-              <div>
-                <span className="font-bold">Type:</span>
-                <p
-                  className={
-                    transaction.type === "deposit"
-                      ? "text-green-600"
-                      : "text-red-600"
-                  }
-                >
-                  {transaction.type.charAt(0).toUpperCase() +
-                    transaction.type.slice(1)}
-                </p>
-              </div>
-              <div>
-                <span className="font-bold">Amount:</span>
-                <p
-                  className={
-                    transaction.type === "withdrawal"
-                      ? "text-red-600"
-                      : "text-green-600"
-                  }
-                >
-                  {new Intl.NumberFormat("en-US", {
-                    style: "currency",
-                    currency: "USD",
-                  }).format(transaction.amount)}
-                </p>
-              </div>
-            </div>
-
-            <div className="flex justify-between min-w-[400px] mt-2">
-              <div>
-                <span className="font-bold">Balance:</span>
-                <p>
-                  {transaction.balance !== undefined
-                    ? new Intl.NumberFormat("en-US", {
-                        style: "currency",
-                        currency: "USD",
-                      }).format(transaction.balance)
-                    : "-"}
-                </p>
-              </div>
-              <div>
-                <span className="font-bold">Description:</span>
-                <p>{transaction.description || "-"}</p>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Pagination Controls */}
+      {/* Pagination */}
       <div className="flex justify-between w-full mt-4">
+        <button
+          className={`${
+            currentPage === 1 ? "bg-gray-300" : "bg-blue-500"
+          } text-white py-2 px-4 rounded`}
+          onClick={() => setCurrentPage(1)}
+          disabled={currentPage === 1}
+        >
+          First
+        </button>
         <button
           className={`${
             currentPage === 1 ? "bg-gray-300" : "bg-blue-500"
@@ -218,6 +156,15 @@ const TransactionHistory: React.FC = () => {
           disabled={currentPage === totalPages}
         >
           Next
+        </button>
+        <button
+          className={`${
+            currentPage === totalPages ? "bg-gray-300" : "bg-blue-500"
+          } text-white py-2 px-4 rounded`}
+          onClick={() => setCurrentPage(totalPages)}
+          disabled={currentPage === totalPages}
+        >
+          Last
         </button>
       </div>
     </div>
