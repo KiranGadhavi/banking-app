@@ -152,7 +152,9 @@ export default function Page() {
         transition={{ type: "spring", stiffness: 120, delay: 0.3 }}
         className="flex flex-col gap-4"
       >
-        <h1 className="pt-8">Transaction Form</h1>
+        <h1 className="pt-8 text-2xl font-bold text-gray-600">
+          Transaction Form
+        </h1>
         {status.isError && <p className="text-red-500">{status.message}</p>}
         {!status.isError && status.message && (
           <p className="text-green-500">{status.message}</p>
