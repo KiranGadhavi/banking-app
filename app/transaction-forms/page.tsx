@@ -100,14 +100,6 @@ export default function Page() {
       return false;
     }
 
-    // Check if "toAccount" is provided for transfers
-    // if (formData.type === "transfer" && !formData.toAccount) {
-    //   setStatus({
-    //     message: "To Account is required for transfers",
-    //     isError: true,
-    //   });
-    //   return false;
-    // }
     if (formData.type === "transfer") {
       if (!validateIBAN(formData.toAccount)) {
         setStatus({

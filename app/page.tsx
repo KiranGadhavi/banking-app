@@ -4,6 +4,8 @@ import React from "react";
 import { useAccount } from "../contexts/AccountContext";
 import TransactionCard from "./components/TransactionCard";
 import { motion, Variants } from "framer-motion";
+import Button from "./components/Button";
+import Link from "next/link";
 
 export default function Home() {
   const { state } = useAccount();
@@ -46,12 +48,15 @@ export default function Home() {
             </motion.div>
           ) : (
             <div className="flex flex-col py-8 mx-auto text-center">
-              <h2 className="text-3xl font-bold pb-6 text-gray-700">
-                Welcome to Your Dashboard
-              </h2>
               <p className="text-lg text-gray-600">
                 No transactions available.
               </p>
+              <p className="m-2 text-lg text-gray-600">
+                Ready to make your first transaction?
+              </p>
+              <Link href="/transaction-forms">
+                <Button text="Make a Transaction" />
+              </Link>
             </div>
           )}
           {/* {state.transactions.map((transaction) => (
