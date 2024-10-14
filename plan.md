@@ -38,7 +38,7 @@ Lets start with a few components:
     Form Input Component: For handling user inputs like amounts, IBANs, etc.
     Transaction Card Component: To display transaction details such as date, amount, and balance.
 
-3. Now, I would like to Set Up State Management
+3. Now, I would like to Set Up State Management ✅
 
 Since a banking app involves complex interactions between different parts of the UI, managing the app state will be crucial.
 
@@ -50,7 +50,7 @@ Example:
     Use Context or a custom hook (useBankAccount) to manage account balances and update transactions globally.
     Use Redux to manage user sessions, balances, and transaction details.
 
-    4. Simulate API with Mock Data
+    4. Simulate API with Mock Data ✅
 
 Since I won’t be interacting with an actual backend at the moment, I'll need to simulate API behavior:
 
