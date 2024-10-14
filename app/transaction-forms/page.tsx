@@ -13,6 +13,7 @@ import DescriptionInput from "./components/DescriptionInput";
 import DateInput from "./components/DateInput"; // Custom DateInput component
 import FromAccountInput from "./components/FromAccountInput";
 import ToAccountInput from "./components/ToAccountInput";
+import { validateIBAN } from "@/app/utils/ibanValidation";
 
 // Define the shape of the form data
 interface FormData {
@@ -100,12 +101,21 @@ export default function Page() {
     }
 
     // Check if "toAccount" is provided for transfers
-    if (formData.type === "transfer" && !formData.toAccount) {
-      setStatus({
-        message: "To Account is required for transfers",
-        isError: true,
-      });
-      return false;
+    // if (formData.type === "transfer" && !formData.toAccount) {
+    //   setStatus({
+    //     message: "To Account is required for transfers",
+    //     isError: true,
+    //   });
+    //   return false;
+    // }
+    if (formData.type === "transfer") {
+      if (!validateIBAN(formData.toAccount)) {
+        setStatus({
+          message: "Invalid IBAN for transfer. Please check and try again.",
+          isError: true,
+        });
+        return false;
+      }
     }
 
     // Check if "fromAccount" is provided for withdrawals and transfers

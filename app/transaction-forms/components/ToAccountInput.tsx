@@ -1,30 +1,44 @@
 import FormInput from "@/app/components/FormInput";
-import React from "react";
-// import FormInput from "./FormInput"; // Make sure FormInput is correctly imported
+import React, { useState } from "react";
 import { FiUser } from "react-icons/fi";
+import { validateIBAN } from "../../utils/ibanValidation";
 
 interface ToAccountInputProps {
-  toAccount: string; // Set the type for toAccount
-  onChange: (value: string) => void; // Explicitly define the type for onChange
+  toAccount: string;
+  onChange: (value: string) => void;
 }
 
 const ToAccountInput: React.FC<ToAccountInputProps> = ({
   toAccount,
   onChange,
 }) => {
+  const [error, setError] = useState<string>("");
+
+  const handleChange = (value: string) => {
+    onChange(value);
+    if (value && !validateIBAN(value)) {
+      setError("Invalid IBAN format");
+    } else {
+      setError("");
+    }
+  };
+
   return (
-    <FormInput
-      type="text"
-      id="to-account"
-      label={
-        <span className="flex items-center gap-2">
-          <FiUser /> To Account
-        </span>
-      }
-      placeholder="Enter to account"
-      value={toAccount}
-      onChange={onChange}
-    />
+    <div>
+      <FormInput
+        type="text"
+        id="to-account"
+        label={
+          <span className="flex items-center gap-2">
+            <FiUser /> To Account (IBAN)
+          </span>
+        }
+        placeholder="Enter IBAN"
+        value={toAccount}
+        onChange={handleChange}
+      />
+      {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+    </div>
   );
 };
 
