@@ -1,8 +1,9 @@
 "use client"; // Ensure this is at the very top
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useTheme } from "../../../contexts/ThemeContext";
 import {
   FaHome,
   FaUser,
@@ -13,20 +14,14 @@ import {
 } from "react-icons/fa";
 
 const HeaderComponent = () => {
-  const [darkMode, setDarkMode] = useState(true);
+  const { darkMode, toggleDarkMode } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
-
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", darkMode);
-  }, [darkMode]);
 
   const toggleMenu = () => {
     console.log("Menu toggled"); // Debug line to check if toggleMenu is called
     setIsMenuOpen((prev) => !prev);
   };
-
-  const toggleDarkMode = () => setDarkMode((prev) => !prev);
 
   const menuItems = [
     { href: "/", label: "Home", icon: FaHome },
@@ -38,7 +33,6 @@ const HeaderComponent = () => {
     },
     { href: "/transaction-history", label: "Transaction History", icon: FaCog },
   ];
-
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-white dark:bg-gray-900 transition-all duration-300">
       <div className="container mx-auto px-4">
@@ -103,8 +97,8 @@ const HeaderComponent = () => {
                   : "hover:bg-blue-100 dark:hover:bg-gray-700"
               }`}
               onClick={() => {
-                toggleMenu(); // Close the menu when clicked
-                setIsMenuOpen(false); // Ensure it closes on click
+                toggleMenu();
+                setIsMenuOpen(false);
               }}
             >
               <Icon

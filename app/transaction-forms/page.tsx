@@ -140,88 +140,91 @@ export default function Page() {
 
   // JSX for rendering the form and status messages
   return (
-    <motion.section
-      initial={{ opacity: 0, y: 100 }} // Initial animation state
-      animate={{ opacity: 1, y: 0 }} // Final animation state
-      transition={{ type: "spring", stiffness: 120, damping: 20, delay: 0.2 }}
-      className="grid grid-col gap-4 xs:mx-6 sm:mx-40 md:mx-60 xl:mx-96"
-    >
-      <motion.article
-        initial={{ opacity: 0, scale: 0.9 }} // Initial animation state
-        animate={{ opacity: 1, scale: 1 }} // Final animation state
-        transition={{ type: "spring", stiffness: 120, delay: 0.3 }}
-        className="flex flex-col gap-4"
+    <div className="min-h-screen bg-white text-black dark:bg-gray-900 dark:text-white">
+      <motion.section
+        initial={{ opacity: 0, y: 100 }} // Initial animation state
+        animate={{ opacity: 1, y: 0 }} // Final animation state
+        transition={{ type: "spring", stiffness: 120, damping: 20, delay: 0.2 }}
+        className="grid grid-col gap-4 xs:mx-6 sm:mx-40 md:mx-60 xl:mx-96"
       >
-        <h1 className="pt-8 text-2xl font-bold ">Transaction Form</h1>
-        {status.isError && <p className="text-red-500">{status.message}</p>}
-        {!status.isError && status.message && (
-          <p className="text-green-500">{status.message}</p>
-        )}
-        <motion.form
-          initial={{ opacity: 0, y: 30 }} // Initial animation state
-          animate={{ opacity: 1, y: 0 }} // Final animation state
-          transition={{
-            type: "spring",
-            stiffness: 100,
-            damping: 20,
-            delay: 0.4,
-          }}
-          onSubmit={handleSubmit} // Trigger handleSubmit on form submission
+        <motion.article
+          initial={{ opacity: 0, scale: 0.9 }} // Initial animation state
+          animate={{ opacity: 1, scale: 1 }} // Final animation state
+          transition={{ type: "spring", stiffness: 120, delay: 0.3 }}
+          className="flex flex-col gap-4"
         >
-          {/* Render subcomponents */}
-          <TransactionTypeInput
-            type={formData.type}
-            onChange={(value: "deposit" | "withdrawal" | "transfer") => {
-              setFormData((prev) => ({ ...prev, type: value }));
+          <h1 className="pt-8 text-2xl font-bold mx-auto">Transaction Form</h1>
+          {status.isError && <p className="text-red-500">{status.message}</p>}
+          {!status.isError && status.message && (
+            <p className="text-green-500">{status.message}</p>
+          )}
+          <motion.form
+            initial={{ opacity: 0, y: 30 }} // Initial animation state
+            animate={{ opacity: 1, y: 0 }} // Final animation state
+            transition={{
+              type: "spring",
+              stiffness: 100,
+              damping: 20,
+              delay: 0.4,
             }}
-          />
-          <AmountInput
-            amount={formData.amount}
-            onChange={(value: number) =>
-              setFormData((prev) => ({ ...prev, amount: value }))
-            }
-          />
-          <CurrencyInput
-            currency={formData.currency}
-            onChange={(value: string) =>
-              setFormData((prev) => ({ ...prev, currency: value }))
-            }
-          />
-          <DescriptionInput
-            description={formData.description}
-            onChange={(value: string) =>
-              setFormData((prev) => ({ ...prev, description: value }))
-            }
-          />
-
-          {/* Custom DateInput component */}
-          <DateInput
-            date={formData.date}
-            onChange={(date: Date | null) =>
-              setFormData((prev) => ({ ...prev, date }))
-            }
-          />
-
-          {(formData.type === "withdrawal" || formData.type === "transfer") && (
-            <FromAccountInput
-              fromAccount={formData.fromAccount}
-              onChange={(value: string) =>
-                setFormData((prev) => ({ ...prev, fromAccount: value }))
+            onSubmit={handleSubmit} // Trigger handleSubmit on form submission
+          >
+            {/* Render subcomponents */}
+            <TransactionTypeInput
+              type={formData.type}
+              onChange={(value: "deposit" | "withdrawal" | "transfer") => {
+                setFormData((prev) => ({ ...prev, type: value }));
+              }}
+            />
+            <AmountInput
+              amount={formData.amount}
+              onChange={(value: number) =>
+                setFormData((prev) => ({ ...prev, amount: value }))
               }
             />
-          )}
-          {formData.type === "transfer" && (
-            <ToAccountInput
-              toAccount={formData.toAccount}
+            <CurrencyInput
+              currency={formData.currency}
               onChange={(value: string) =>
-                setFormData((prev) => ({ ...prev, toAccount: value }))
+                setFormData((prev) => ({ ...prev, currency: value }))
               }
             />
-          )}
+            <DescriptionInput
+              description={formData.description}
+              onChange={(value: string) =>
+                setFormData((prev) => ({ ...prev, description: value }))
+              }
+            />
 
-          <Button text="submit" className="mt-4" />
-        </motion.form>
-      </motion.article>
-    </motion.section>
+            {/* Custom DateInput component */}
+            <DateInput
+              date={formData.date}
+              onChange={(date: Date | null) =>
+                setFormData((prev) => ({ ...prev, date }))
+              }
+            />
+
+            {(formData.type === "withdrawal" ||
+              formData.type === "transfer") && (
+              <FromAccountInput
+                fromAccount={formData.fromAccount}
+                onChange={(value: string) =>
+                  setFormData((prev) => ({ ...prev, fromAccount: value }))
+                }
+              />
+            )}
+            {formData.type === "transfer" && (
+              <ToAccountInput
+                toAccount={formData.toAccount}
+                onChange={(value: string) =>
+                  setFormData((prev) => ({ ...prev, toAccount: value }))
+                }
+              />
+            )}
+
+            <Button text="submit" className="mt-4" />
+          </motion.form>
+        </motion.article>
+      </motion.section>
+    </div>
   );
 }
